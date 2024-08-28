@@ -92,7 +92,7 @@ class DeeplTranslationService implements SingletonInterface
 
         $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
 
-        if (Environment::isComposerMode()) {
+        if (Environment::isComposerMode() || class_exists(Translator::class)) {
             $deeplOptions = array_merge(
                 [
                     TranslatorOptions::PROXY => $this->getProxySettings(),
@@ -286,7 +286,7 @@ class DeeplTranslationService implements SingletonInterface
         if ($this->canTranslate($sourceLanguage, $targetLanguage) && isset($GLOBALS['TCA'][$tableName])) {
             $slugField = null;
             foreach ($record as $fieldName => $fieldValue) {
-                if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName]) && !in_array($fieldName, $exceptFieldNames)) {
+                if ($fieldValue && isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName]) && !in_array($fieldName, $exceptFieldNames)) {
                     $config = $GLOBALS['TCA'][$tableName]['columns'][$fieldName];
                     if ($this->canFieldBeTranslated($tableName, $fieldName, $fieldValue, $config)) {
                         if ($config['config']['type'] === 'flex') {

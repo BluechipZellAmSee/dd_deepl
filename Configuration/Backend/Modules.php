@@ -1,6 +1,6 @@
 <?php
 
-if (\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
+if (\TYPO3\CMS\Core\Core\Environment::isComposerMode() || class_exists(\DeepL\Translator::class)) {
     return [
         'site_DdDeeplDdDeepl' => [
             'parent' => 'site',
